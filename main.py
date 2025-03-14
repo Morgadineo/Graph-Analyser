@@ -2,8 +2,8 @@
     d) Implementar uma rotina que receba um grafo DIRECIONADO qualquer e: 
         a. [ ] [X] Represente o mesmo através da matriz de adjacência E Lista de adjacência
         b. [ ] Informe se o grafo é uma arvore, se for, informe o tipo
-        c. [ ] Informe o grau de cada vértice
-        d. [ ] Informe o grau o grafo
+        c. [X] Informe o grau de cada vértice
+        d. [X] Informe o grau o grafo
         e. [X] Informe se o grafo é completo
         f. [X] Informe se o grafo possui laços
         g. [X] Informe se é um grafo simples
@@ -32,7 +32,81 @@ class Graph:
         self.its_simple: bool   = self.verify_simplicity()
         self.its_complete: bool = self.verify_completeness()
         self.its_tree: bool     = True  # Considera que é uma até não ser.
+        
+        # Contagem dos graus de entrada e saída de cada vértice.
+        self.vertices_out_degree: list[int] = self.count_vertices_out_degree()
+        self.vertices_in_degree: list[int]  = self.count_vertices_in_degree()
 
+        self.graph_out_degree: int = self.count_graph_out_degree()
+        self.graph_in_degree: int  = self.count_graph_in_degree()
+        
+        print(f'{self.graph_in_degree} | {self.graph_out_degree}')
+
+    def count_graph_in_degree(self) -> int:
+        """
+        Count the total graph in degree.
+
+        return:
+            The graph in degree.
+        """
+        total = 0
+        for i in range(self.vertices_qtt):
+            total += self.vertices_in_degree[i]
+
+        return total
+
+    def count_graph_out_degree(self) -> int:
+        """
+        Count the total graph out degree.
+
+        return:
+            The graph out degree.
+        """
+        total = 0
+        for i in range(self.vertices_qtt):
+            total += self.vertices_out_degree[i]
+
+        return total
+
+    def print_vertices_degrees(self) -> None:
+        """
+        Print the vertices in and out degree.
+        """
+        for i, vertice in enumerate(self.graph.keys()):
+           print(f"{vertice} -> {self.vertices_out_degree[i]}\n{vertice} <- {self.vertices_in_degree[i]}\n") 
+
+    def count_vertices_in_degree(self) -> list[int]:
+        """
+        Count the in degree of all vertices present in the graph.
+
+        return:
+            A list of ints.
+        """
+        degree_list: list[int] = []
+        
+        for vertice in self.graph.keys():
+            ocurrency = 0
+            for adjancency in self.graph.values():
+                ocurrency += adjancency.count(vertice)
+            
+            degree_list.append(ocurrency)
+
+        return degree_list
+
+    def count_vertices_out_degree(self) -> list[int]:
+        """
+        Count the out degree of all vertices present in the graph.
+
+        return:
+            A list of ints. Degree[0] is referent to graph.keys()[0].
+        """
+        degree_list: list[int] = []
+        
+        for vertice in self.graph.keys():
+            degree_list.append(len(self.graph[vertice]))
+
+        return degree_list
+                
 
     def print_adjancency_list(self) -> None:
         """
@@ -117,8 +191,11 @@ class Graph:
 if __name__ == '__main__':
     # Representação de um grafo:
     # {'Vértice': ['array de vértices conectados']}
-    graph = Graph({'A': ['A', 'B'], 
-             'B': ['A'], 
-             })
+    # Caso o vértice não possua conexões, fica:
+    # {'Vértice': []}
+    graph = Graph({'A': ['B', 'C'], 
+                   'B': [],
+                   'C': ['B'],
+                   'D': ['B', 'B', 'D']})
     
 
