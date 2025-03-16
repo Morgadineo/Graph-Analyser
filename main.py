@@ -1,30 +1,28 @@
 """
     d) Implementar uma rotina que receba um grafo DIRECIONADO qualquer e: 
-        a. [ ] [X] Represente o mesmo através da matriz de adjacência E Lista de adjacência
+        a. [X] Represente o mesmo através da matriz de adjacência E Lista de adjacência
         b. [ ] Informe se o grafo é uma arvore, se for, informe o tipo
         c. [X] Informe o grau de cada vértice
         d. [X] Informe o grau o grafo
         e. [X] Informe se o grafo é completo
         f. [X] Informe se o grafo possui laços
         g. [X] Informe se é um grafo simples
-        h. [ ] Imprima a matriz/lista de adjacência
+        h. [X] Imprima a matriz/lista de adjacência
 
 """
-
 
 class Graph:
 
     def __init__(self, graph: dict[str, str]):
         # Representações
         self.graph: dict[str, str] = graph       # graph é equivalente a lista de adjacência.
-        self.adjacency_matrix: list[int] = None
 
         # Atributos adicionais
-        self.vertices_qtt: int = len(self.graph.keys()) # Quantidade de vértices
-        self.edges_qtt: int    = self.count_edges()     # Quantidade de arestas
-
-        # Atributos de verificações
-        # 1º verifica se tem loop e aresta paralela
+        self.vertices: list[str] = [vertice for vertice in self.graph.keys()] # Lista de vertices
+        self.vertices_qtt: int   = len(self.vertices)                         # Quantidade de vértices
+        self.edges_qtt: int      = self.count_edges()                         # Quantidade de arestas
+        
+        # Atributos de verificação
         self.has_loop: bool     = self.verify_loop()
         self.has_parallel: bool = self.verify_parallel()
        
@@ -36,11 +34,61 @@ class Graph:
         # Contagem dos graus de entrada e saída de cada vértice.
         self.vertices_out_degree: list[int] = self.count_vertices_out_degree()
         self.vertices_in_degree: list[int]  = self.count_vertices_in_degree()
-
+        
+        # Contagem de graus de entrada e saída do grafo.
         self.graph_out_degree: int = self.count_graph_out_degree()
         self.graph_in_degree: int  = self.count_graph_in_degree()
+
+        # Matriz de adjacência
+        self.adjacency_matrix: list[int] = self.create_adjacency_matrix()
         
-        print(f'{self.graph_in_degree} | {self.graph_out_degree}')
+        self.print_adjancency_matrix()
+
+
+    def print_adjancency_matrix(self) -> None:
+
+        for vertice in range(self.vertices_qtt):
+            print(f"  {self.vertices[vertice]}", end="")
+
+        print("\n")
+
+        for vertice in range(self.vertices_qtt):
+            print(f"{self.vertices[vertice]}", end="")
+
+            for edge in range(self.vertices_qtt):
+                print(f" {self.adjacency_matrix[vertice][edge]} ", end="")
+            print("\n")
+
+    def create_adjacency_matrix(self) -> list[list[int]]:
+        """
+        Create the adjancency matrix of the graph.
+
+        returns:
+            The adjancency matrix of the graph. 
+        """
+        adjancency_matrix = self.__initialize_adjancy_matrix__() # Inicializa a matriz com 0s
+
+        for i, vertice in enumerate(self.vertices):
+            for edge in self.graph[vertice]:
+                adjancency_matrix[i][self.vertices.index(edge)] += 1
+
+        return adjancency_matrix
+
+    def __initialize_adjancy_matrix__(self):
+        """
+        Create and return a adjacency matrix [vertices][vertices]
+
+        return:
+            The matrix full with 0 with [vertices][vertices] with only 0.
+        """
+        # Esta "list comprehension" inicializa uma matrix de 0s.
+        # Pode-se escrever utilizando estruturas de repetição também.
+        adjacency_matrix: list[list[int]] = [[0 for i in range(self.vertices_qtt)] 
+                                              for j in range(self.vertices_qtt)]
+        
+        return adjacency_matrix
+
+
 
     def count_graph_in_degree(self) -> int:
         """
@@ -72,8 +120,10 @@ class Graph:
         """
         Print the vertices in and out degree.
         """
-        for i, vertice in enumerate(self.graph.keys()):
+        for i, vertice in enumerate(self.vertices):
            print(f"{vertice} -> {self.vertices_out_degree[i]}\n{vertice} <- {self.vertices_in_degree[i]}\n") 
+
+    
 
     def count_vertices_in_degree(self) -> list[int]:
         """
@@ -84,7 +134,7 @@ class Graph:
         """
         degree_list: list[int] = []
         
-        for vertice in self.graph.keys():
+        for vertice in self.vertices:
             ocurrency = 0
             for adjancency in self.graph.values():
                 ocurrency += adjancency.count(vertice)
@@ -102,7 +152,7 @@ class Graph:
         """
         degree_list: list[int] = []
         
-        for vertice in self.graph.keys():
+        for vertice in self.vertices:
             degree_list.append(len(self.graph[vertice]))
 
         return degree_list
@@ -114,7 +164,7 @@ class Graph:
         {vertice1}: {v1}, {v2}, {v3}, ...
         {vertice2}: {v1}, {v2}, {v3}, ...
         """
-        for vertice in self.graph.keys():
+        for vertice in self.vertices:
             print(f"{vertice}: ", end="")
             for i, adj_vertice in enumerate(self.graph[vertice]):
                 if i == (len(self.graph[vertice]) - 1):
@@ -169,7 +219,7 @@ class Graph:
         Returns:
             True if have a loop edge and False if not.
         """
-        for vertice in self.graph.keys():
+        for vertice in self.vertices:
             if vertice in self.graph[vertice]:
                 return True
         return False
