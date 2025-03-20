@@ -1,0 +1,57 @@
+%========Template.tex=========================================================%
+% Arquivo com as configurações do template utilizado.
+%=============================================================================%
+
+
+%==> Pacotes necessários <====================================================%
+\usepackage{amsmath}
+\usepackage{amssymb}  % Símbolos matemáticos
+\usepackage{graphicx} % Imagens
+\usepackage{color}
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage{listings} % Trechos de código
+\usepackage{xcolor}
+
+\graphicspath{ {./Imagens/} }
+
+%==> Configurações de layout <================================================%
+\headsep=5mm \topmargin=0cm \oddsidemargin=-0.5cm
+\evensidemargin=-0.5cm \textheight=23.1cm \textwidth=17.5cm \footskip=8mm
+\columnsep=7mm \setlength{\doublerulesep}{0.1pt}
+\footnotesep=3.5mm \arraycolsep=2pt
+\font\tenrm=cmr10
+
+%========Formatação do título e autor=========================================%
+\def\title#1{\vspace{3mm}\begin{flushleft}\Large\bf\boldmath #1 \end{flushleft}\vspace{1mm}}
+\def\author#1{\begin{flushleft}\normalsize #1\end{flushleft}\vspace*{-4pt}}
+
+%==> Cabeçalhos e rodapés <===================================================%
+\pagestyle{fancy}
+\fancyhead[LO]{\small\sl Trabalho de Teoria dos Grafos. Grupo D}
+\fancyhead[RO]{\small\thepage}
+\fancyhead[LE]{\small\thepage}
+\fancyhead[RE]{\small\sl Universidade Vila Velha}
+
+%==> Outras configurações do template <=======================================%
+\renewcommand\tablename{\bf \footnotesize Table}
+\renewcommand\figurename{\footnotesize Fig.\!\!}
+
+%==> Formatação de código <===================================================%
+\renewcommand{\lstlistingname}{Código}
+
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\footnotesize, % Fonte do código
+    keywordstyle=\color{blue}, % Cor das palavras-chave
+    stringstyle=\color{green}, % Cor de strings
+    commentstyle=\color{gray}, % Cor de comentários
+    numbers=left, % Numeração de linhas
+    numberstyle=\tiny, % Estilo dos números
+    stepnumber=1, % Frequência da numeração
+    frame=single, % Moldura ao redor do código
+    breaklines=true, % Quebra de linha automática
+    tabsize=4, % Tamanho do tab
+}
+
